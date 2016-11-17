@@ -1,0 +1,27 @@
+- hosts: all
+  tasks:
+    - name: Register with Satellite and update
+      rhn_register: >
+        state=present
+        username="{{ username }}"
+        password="{{ password }}"
+        systemorgid="{{ org }}""
+        activationkey="{{ activation_key }}"
+        server_url="{{ satellite_url }}"
+
+    - name: Install Tomcat
+      yum:
+        name: "{{ item }}"
+        state: installed
+        with_items:
+          - tomcat
+          - tomcat-javadoc
+
+    - name: Enable Tomcat
+      service: >
+        name=tomcat
+        enabled=yes
+        state=started
+
+
+
